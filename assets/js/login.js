@@ -20,6 +20,7 @@ $(function () {
    */
   // 获取 form 表单模块
   var form = layui.form
+  var layer = layui.layer
 
   // 定义验证规则
   form.verify({
@@ -35,5 +36,52 @@ $(function () {
         return '两次密码不一致！'
       }
     }
+  })
+
+  /**
+   * 注册功能
+   */
+  $('#form_reg').on('submit', function (e) {
+    e.preventDefault()
+
+    var data = {
+      username: $('#form_reg [name=username]').val(),
+      password: $('#form_reg [name=password]').val()
+    }
+
+    // 好的代码一定是阅读性强的
+    $.post('/api/reguser', data, function (res) {
+      if (res.status !== 0) {
+        return layer.msg(res.message)
+      }
+
+      layer.msg('注册成功，请进行登录！')
+
+      // 模拟用户点击操作
+      $('#link_login').click()
+    })
+  })
+
+  /**
+   * 登录功能
+   */
+  $('#form_login').submit(function (e) {
+    e.preventDefault()
+
+    $.ajax({
+      url: '/api/login',
+      method: 'POST',
+      data: $(this).serialize(),
+      success: function (res) {
+        if (res.status !== 0) {
+          return layer.msg(res.message)
+        }
+
+        // 将 token 保存到本地
+        localStorage.setItem('token', res.token)
+        // 跳转到后台主页
+        location.href = '/index.html'
+      }
+    })
   })
 })
