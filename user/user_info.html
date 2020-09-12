@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>基本资料</title>
+  <!-- 导入 layui 样式 -->
+  <link rel="stylesheet" href="/assets/lib/layui/css/layui.css">
+  <!-- 导入自己的样式 -->
+  <link rel="stylesheet" href="/assets/css/user/user_info.css">
+</head>
+
+<body>
+  <div class="layui-card">
+    <div class="layui-card-header">修改用户信息</div>
+    <div class="layui-card-body">
+      <form class="layui-form" id="changeUserInfo" lay-filter="formUserInfo">
+        <!-- 所谓的隐藏域就是 一个 input 输入框，只不过这个 input type 属性值为 hidden -->
+        <!-- 这个隐藏域在页面中是隐藏的，是看不到的，但是是存在与 DOM 中的 -->
+        <!-- 作用： 一般在发送请求的时候，需要传递的 id ，但是不好声明 -->
+        <!-- 所以创建一个 id ，用来保存 id 值， -->
+        <!-- 这样，我们通过 $(this).serialize 就能到获取 id  -->
+        <!-- 方便操作，方便取值和赋值 -->
+        <input type="hidden" name="id">
+        <div class="layui-form-item">
+          <label class="layui-form-label">登录名称</label>
+          <div class="layui-input-block">
+            <input type="text" name="username" lay-verify="required" required placeholder="请输入登录名" autocomplete="off"
+              class="layui-input" readonly>
+          </div>
+        </div>
+        <div class="layui-form-item">
+          <label class="layui-form-label">用户昵称</label>
+          <div class="layui-input-block">
+            <input type="text" name="nickname" required lay-verify="required|nickname" placeholder="请输入用户昵称" autocomplete="off"
+              class="layui-input">
+          </div>
+        </div>
+        <div class="layui-form-item">
+          <label class="layui-form-label">用户邮箱</label>
+          <div class="layui-input-block">
+            <input type="text" name="email" required lay-verify="required|email" placeholder="请输入用户邮箱" autocomplete="off"
+              class="layui-input">
+          </div>
+        </div>
+        <div class="layui-form-item">
+          <div class="layui-input-block">
+            <button class="layui-btn" lay-submit lay-filter="formDemo">提交修改</button>
+            <button type="reset" class="layui-btn layui-btn-primary" id="resetBtn">重置</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="/assets/lib/layui/layui.all.js"></script>
+  <script src="/assets/lib/jquery.js"></script>
+  <script src="/assets/js/baseApi.js"></script>
+  <script src="/assets/js/user/user_info.js"></script>
+</body>
+
+</html>
