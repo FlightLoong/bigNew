@@ -58,6 +58,8 @@ $(function () {
       // }
     })
   }
+
+  // window.getUserInfo = getUserInfo
   
   function renderAvatar(user) {
     // 1. 获取用户的名称

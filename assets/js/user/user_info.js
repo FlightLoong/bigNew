@@ -62,7 +62,9 @@ $(function () {
         // 使用 iframe 以后，iframe 显示的页面可以理解为是子页面
         // iframe 标签所在的页面，可以看做事父页面
         // 如果想父页面的方法，可以使用 window.parent.方法名即可
-        window.parent.getUserInfo()
+
+        // is not function
+        top.window.parent.getUserInfo()
       }
     })
   })
