@@ -1,0 +1,19 @@
+html, body {
+  margin: 0px;
+  padding: 0px;
+}
+
+body {
+  padding: 15px;
+  background-color: #f2f2f5;
+}
+
+.layui-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#addCateForm {
+  padding: 20px 30px 0px 0px;
+}
