@@ -7,7 +7,7 @@ $(function () {
    * 获取文章类别
    */
   getCateList()
-  function getCateList () {
+  function getCateList() {
     $.ajax({
       url: '/my/article/cates',
       method: 'GET',
@@ -41,7 +41,7 @@ $(function () {
     })
   })
 
-  
+
   /**
    * 添加文章分类
    */
@@ -82,7 +82,7 @@ $(function () {
     })
 
     var cateId = $(this).attr('data-id')
-    
+
     $.ajax({
       url: `/my/article/cates/${cateId}`,
       method: 'GET',
@@ -117,6 +117,33 @@ $(function () {
         // 关闭编辑弹框
         layer.close(editCateIndex)
       }
+    })
+  })
+
+  /**
+   * 删除文章分类
+   */
+  $('body').on('click', '.btn-delete', function () {
+    // 获取分类 Id
+    var cateId = $(this).attr('data-id')
+
+    // 询问弹框
+    layer.confirm('确认删除?', { icon: 3, title: '提示' }, function (index) {
+
+      $.ajax({
+        url: `/my/article/deletecate/${cateId}`,
+        method: 'GET',
+        success: function (res) {
+          if (res.status !== 0) {
+            return layer.msg(res.message)
+          }
+
+          layer.msg('删除分类成功')
+          getCateList()
+          layer.close(index)
+
+        }
+      })
     })
   })
 })
