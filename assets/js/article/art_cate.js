@@ -1,6 +1,7 @@
 $(function () {
 
   var layer = layui.layer
+  var form = layui.form
 
   /**
    * 获取文章类别
@@ -63,6 +64,58 @@ $(function () {
 
         // 根据 index 关闭弹层
         layer.close(addCateIndex)
+      }
+    })
+  })
+
+  /**
+   * 展示编辑弹框
+   */
+  // 编辑弹框的 Index 
+  var editCateIndex = null
+  $('body').on('click', '.btn-edit', function () {
+    editCateIndex = layer.open({
+      type: 1,
+      area: ['500px', '300px'],
+      title: '修改文章分类',
+      content: $('#edit-dialog').html()
+    })
+
+    var cateId = $(this).attr('data-id')
+    
+    $.ajax({
+      url: `/my/article/cates/${cateId}`,
+      method: 'GET',
+      success: function (res) {
+        if (res.status !== 0) {
+          return layer.msg(res.message)
+        }
+        form.val('edit-form', res.data)
+      }
+    })
+  })
+
+  /**
+   * 编辑文章分类
+   */
+  $('body').on('submit', '#editCateForm', function (e) {
+    e.preventDefault()
+
+    $.ajax({
+      url: '/my/article/updatecate',
+      method: 'POST',
+      data: $(this).serialize(),
+      success: function (res) {
+        if (res.status !== 0) {
+          return layer.msg(res.message)
+        }
+
+        // 编辑成功提示
+        layer.msg('编辑分类成功')
+        // 重新获取数据
+        getCateList()
+        // 关闭编辑弹框
+        layer.close(editCateIndex)
       }
     })
   })
