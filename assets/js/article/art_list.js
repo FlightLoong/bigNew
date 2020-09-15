@@ -44,7 +44,7 @@ $(function () {
    * 渲染所有分类
    */
   initCate()
-  function initCate () {
+  function initCate() {
     $.ajax({
       url: '/my/article/cates',
       method: 'GET',
@@ -82,7 +82,7 @@ $(function () {
   /**
    * 分页处理函数
    */
-  function renderPage (total) {
+  function renderPage(total) {
     laypage.render({
       elem: 'renderpage', // 分页展示的区域
       count: total, // 数据总条数
@@ -101,12 +101,46 @@ $(function () {
         // 所以可以使用 obj.limit 获取到最新的每页显示条数
         q.pagesize = obj.limit
 
-        // initTable()
-
         if (!first) {
           initTable()
         }
       }
     })
   }
+
+  /**
+   * 删除文章
+   */
+  $('body').on('click', '.delete-btn', function () {
+    var artId = $(this).attr('data-id')
+
+    var deleteBtnLen = $('.delete-btn').length
+
+    layer.confirm('是否删除文章?', {icon: 3, title:'提示'}, function(index){
+      $.ajax({
+        url: `/my/article/delete/${artId}`,
+        method: 'GET',
+        success: function (res) {
+          console.log(res)
+          if (res.status !== 0) {
+            return layer.msg(res.message)
+          }
+
+          layer.msg('文章删除成功！')
+
+          // 根据当前页面删除按钮的个数做判断
+          // 如果按钮的个数 > 1，说明当前页文章个数 至少 2 条，不做处理
+          // 如果按钮的个数 = 1，说明当前页文章个数 只有 1 条，让页码值 -1 即可
+          if (deleteBtnLen === 1) {
+            q.pagenum = q.pagenum === 1 ? 1 : q.pagenum - 1
+          }
+
+          initTable()
+
+          layer.close(index);
+        }
+      })
+    
+    })
+  })
 })
