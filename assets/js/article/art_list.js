@@ -136,11 +136,9 @@ $(function () {
           }
 
           initTable()
-
-          layer.close(index);
         }
       })
-    
+      layer.close(index);
     })
   })
 })
