@@ -1,10 +1,12 @@
 $(function () {
   var layer = layui.layer
   var form = layui.form
+  var laypage = layui.laypage
+
   // 声明查询参数
   var q = {
     pagenum: 1, // 当前的页码值
-    pagesize: 20, // 每页显示的条数，默认 2 条
+    pagesize: 2, // 每页显示的条数，默认 2 条
     cate_id: '', // 文章分类的 id
     state: '' // 文章的状态，已发布和草稿
   }
@@ -31,6 +33,9 @@ $(function () {
 
         var tableHtml = template('tpl-table', res)
         $('tbody').html(tableHtml)
+
+        // 调用处理分页的方法
+        renderPage(res.total)
       }
     })
   }
@@ -72,4 +77,36 @@ $(function () {
 
     initTable()
   })
+
+
+  /**
+   * 分页处理函数
+   */
+  function renderPage (total) {
+    laypage.render({
+      elem: 'renderpage', // 分页展示的区域
+      count: total, // 数据总条数
+      limit: q.pagesize, // 每页的条数
+      curr: q.pagenum, // 起始页面
+      // 页面的展示，是根据配置的顺序来展示的
+      layout: ['count', 'limit', 'prev', 'page', 'next', 'skip'],
+      limits: [2, 5, 10, 15],
+      // 触发 jump 的方式有两种
+      // 1、初始化的时候，调用 laypage.render
+      // 2、切换页码值的时候，会触发
+      jump: function (obj, first) {
+        q.pagenum = obj.curr
+
+        // 在 jump 回调函数中，可以取到所有配置项的值
+        // 所以可以使用 obj.limit 获取到最新的每页显示条数
+        q.pagesize = obj.limit
+
+        // initTable()
+
+        if (!first) {
+          initTable()
+        }
+      }
+    })
+  }
 })
